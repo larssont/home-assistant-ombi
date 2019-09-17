@@ -4,5 +4,5 @@
   "documentation": "https://github.com/larssont/home-assistant-ombi",
   "dependencies": [],
   "codeowners": ["@larssont"],
-  "requirements": ["pyombi==0.0.1"]
+  "requirements": ["pyombi==0.0.2"]
 }
