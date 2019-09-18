@@ -2,8 +2,6 @@
 
 This project is a custom integration for Home Assistant which adds sensors displaying information from an Ombi instance.
 
-The following is available.
-
 # Installation
 
 ## Manual
