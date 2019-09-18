@@ -6,10 +6,15 @@ The following is available.
 
 # Installation
 
+## Manual
 1. Add a directory named *custom_components* to your Home Assistant root directory if you do not already have one.
 2. Create a directory named *ombi* inside the custom_components directory.
 3. Download the latest release from this repo and add the files to the directory you created.
 4. Done! See examples under *Usage*.
+
+## HACS
+1. Add this repo as a custom repository under *Community/Settings* with category type integration.
+2. Choose the latest version and press *Install*.
 
 # Usage
 
@@ -37,8 +42,6 @@ Conditions to monitor (defaults to all).
 - movies
 - tv
 - pending
-- recentlyaddedmovies
-- recentlyaddedtv
 
 
 ## Examples
@@ -61,14 +64,14 @@ sensor:
     urlbase: ombi/
     monitored_conditions:
       - movies
-      - pending
-      - recentlyaddedtv
+      - tv
 ```
 
 # Links
 
 * Ombi: https://ombi.io/
 * Home Assistant: https://www.home-assistant.io/
+* HACS: https://github.com/custom-components/hacs
 
 # License
 
