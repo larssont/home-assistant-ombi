@@ -31,27 +31,22 @@ SENSOR_TYPES = {
     "movies": {
         "type": "Movie Requests",
         "icon": "mdi:movie",
-        "endpoint": "http{0}://{1}:{2}/{3}api/v1/Request/movie/total",
     },
     "tv": {
         "type": "TV Show Requests",
         "icon": "mdi:television-classic",
-        "endpoint": "http{0}://{1}:{2}/{3}api/v1/Request/tv/total",
     },
     "pending": {
         "type": "Pending Requests",
         "icon": "mdi:clock-alert-outline",
-        "endpoint": "http{0}://{1}:{2}/{3}api/v1/Request/count",
     },
     "recentlyaddedmovies": {
         "type": "Recently added movies",
         "icon": "mdi:movie",
-        "endpoint": "http{0}://{1}:{2}/{3}api/v1/RecentlyAdded/movies",
     },
     "recentlyaddedtv": {
         "type": "Recently added TV Shows",
         "icon": "mdi:television-classic",
-        "endpoint": "http{0}://{1}:{2}/{3}api/v1/RecentlyAdded/tv/grouped",
     },
 }
 
