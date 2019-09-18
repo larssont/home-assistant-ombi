@@ -120,21 +120,18 @@ class OmbiSensor(Entity):
         return self._state
 
     def update(self):
-
         try:
-            self._ombi.update()
+            if self._label == "pending":
+                self._state = self._ombi.pending_requests
+            elif self._label == "movies":
+                self._state = self._ombi.movie_requests
+            elif self._label == "tv":
+                self._state = self._ombi.tv_requests
+            elif self._label == "approved":
+                self._state = self._ombi.approved_requests
+            elif self._label == "available":
+                self._state = self._ombi.available_requests
         except pyombi.OmbiError as e:
             _LOGGER.warning(f"Error updating Ombi sensor: {e}")
             self._state = None
             return
-
-        if self._label == "pending":
-            self._state = self._ombi.pending_requests
-        elif self._label == "movies":
-            self._state = self._ombi.movie_requests
-        elif self._label == "tv":
-            self._state = self._ombi.tv_requests
-        elif self._label == "approved":
-            self._state = self._ombi.tv_requests
-        elif self._label == "available":
-            self._state = self._ombi.tv_requests
