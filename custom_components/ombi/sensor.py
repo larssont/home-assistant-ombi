@@ -25,14 +25,16 @@ CONF_URLBASE = "urlbase"
 DEFAULT_HOST = "localhost"
 DEFAULT_NAME = "Ombi"
 DEFAULT_PORT = 5000
-DEFAULT_SCAN_INTERVAL = timedelta(seconds=10)
+DEFAULT_SCAN_INTERVAL = timedelta(seconds=60)
 DEFAULT_SSL = False
 DEFAULT_URLBASE = ""
 
 SENSOR_TYPES = {
-    "movies": {"type": "Movie Requests", "icon": "mdi:movie"},
-    "tv": {"type": "TV Show Requests", "icon": "mdi:television-classic"},
-    "pending": {"type": "Pending Requests", "icon": "mdi:clock-alert-outline"},
+    "movies": {"type": "Movie requests", "icon": "mdi:movie"},
+    "tv": {"type": "TV show requests", "icon": "mdi:television-classic"},
+    "pending": {"type": "Pending requests", "icon": "mdi:clock-alert-outline"},
+    "approved": {"type": "Approved requests", "icon": "mdi:check"},
+    "available": {"type": "Available requests", "icon": "mdi:download"},
 }
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
@@ -131,4 +133,8 @@ class OmbiSensor(Entity):
         elif self._label == "movies":
             self._state = self._ombi.movie_requests
         elif self._label == "tv":
+            self._state = self._ombi.tv_requests
+        elif self._label == "approved":
+            self._state = self._ombi.tv_requests
+        elif self._label == "available":
             self._state = self._ombi.tv_requests
