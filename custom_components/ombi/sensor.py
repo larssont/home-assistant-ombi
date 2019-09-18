@@ -41,14 +41,6 @@ SENSOR_TYPES = {
         "type": "Pending Requests",
         "icon": "mdi:clock-alert-outline",
     },
-    "recentlyaddedmovies": {
-        "type": "Recently added movies",
-        "icon": "mdi:movie",
-    },
-    "recentlyaddedtv": {
-        "type": "Recently added TV Shows",
-        "icon": "mdi:television-classic",
-    },
 }
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
@@ -144,12 +136,6 @@ class OmbiSensor(Entity):
 
         if self._label == "pending":
             self._state = self._ombi.pending_requests
-        elif self._label == "recentlyaddedmovies":
-            self._attributes = self._ombi.recently_added_movies
-            self._state = len(self._attributes)
-        elif self._label == "recentlyaddedtv":
-            self._attributes = self._ombi.recently_added_tv
-            self._state = len(self._attributes)
         elif self._label == "movies":
             self._state = self._ombi.movie_requests
         elif self._label == "tv":
