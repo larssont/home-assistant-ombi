@@ -2,6 +2,8 @@
 import logging
 from datetime import timedelta
 
+import pyombi
+
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
 from homeassistant.components.sensor import PLATFORM_SCHEMA
@@ -15,7 +17,6 @@ from homeassistant.const import (
     CONF_SSL,
 )
 from homeassistant.helpers.entity import Entity
-import pyombi
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -29,18 +30,9 @@ DEFAULT_SSL = False
 DEFAULT_URLBASE = ""
 
 SENSOR_TYPES = {
-    "movies": {
-        "type": "Movie Requests",
-        "icon": "mdi:movie",
-    },
-    "tv": {
-        "type": "TV Show Requests",
-        "icon": "mdi:television-classic",
-    },
-    "pending": {
-        "type": "Pending Requests",
-        "icon": "mdi:clock-alert-outline",
-    },
+    "movies": {"type": "Movie Requests", "icon": "mdi:movie"},
+    "tv": {"type": "TV Show Requests", "icon": "mdi:television-classic"},
+    "pending": {"type": "Pending Requests", "icon": "mdi:clock-alert-outline"},
 }
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
