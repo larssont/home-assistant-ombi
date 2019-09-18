@@ -23,7 +23,7 @@ This project is a custom integration for Home Assistant which adds sensors displ
 API key from ombi found under Settings/Ombi on your Ombi page.
 
 **host**  
-The host Ombi is running on.
+The host Ombi is running on. 
 
 **port**  
 The port Ombi is running on.
@@ -40,6 +40,11 @@ Conditions to monitor (defaults to all).
 - movies
 - tv
 - pending
+- approved
+- available
+
+**scan_interval**  
+Polling interval in seconds.
 
 
 ## Examples
