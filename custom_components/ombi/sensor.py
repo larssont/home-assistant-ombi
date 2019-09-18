@@ -15,6 +15,7 @@ from homeassistant.const import (
     CONF_SSL,
 )
 from homeassistant.helpers.entity import Entity
+import pyombi
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -68,25 +69,24 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Setup the Ombi sensor platform."""
-    from pyombi import Ombi
 
     name = config[CONF_NAME]
     conditions = config[CONF_MONITORED_CONDITIONS]
 
     urlbase = f"{config[CONF_URLBASE].strip('/') if config[CONF_URLBASE] else ''}/"
 
-    ombi = Ombi(
+    ombi = pyombi.Ombi(
         ssl=config[CONF_SSL],
         host=config[CONF_HOST],
         port=config[CONF_PORT],
-        apikey=config[CONF_API_KEY],
+        api_key=config[CONF_API_KEY],
         urlbase=urlbase,
     )
 
     try:
         ombi.test_connection()
-    except OSError:
-        _LOGGER.warning("Error while setting up connection to Ombi instance.")
+    except pyombi.OmbiError as e:
+        _LOGGER.warning(f"Error while setting up Ombi: {e}")
         return
 
     sensors = []
@@ -137,8 +137,8 @@ class OmbiSensor(Entity):
 
         try:
             self._ombi.update()
-        except OSError:
-            _LOGGER.warning("Error trying to update Ombi sensor.")
+        except pyombi.OmbiError as e:
+            _LOGGER.warning(f"Error updating Ombi sensor: {e}")
             self._state = None
             return
 
