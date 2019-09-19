@@ -72,7 +72,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     try:
         ombi.test_connection()
     except pyombi.OmbiError as e:
-        _LOGGER.warning(f"Error while setting up Ombi: {e}")
+        _LOGGER.warning("Unable to setup Ombi: %s", e)
         return
 
     sensors = []
@@ -96,7 +96,6 @@ class OmbiSensor(Entity):
         self._label = label
         self._type = sensor_type
         self._ombi = ombi
-        self._attributes = {}
         self._icon = icon
 
     @property
@@ -108,11 +107,6 @@ class OmbiSensor(Entity):
     def icon(self):
         """Return the icon to use in the frontend."""
         return self._icon
-
-    @property
-    def device_state_attributes(self):
-        """Return the state attributes."""
-        return self._attributes
 
     @property
     def state(self):
@@ -132,6 +126,6 @@ class OmbiSensor(Entity):
             elif self._label == "available":
                 self._state = self._ombi.available_requests
         except pyombi.OmbiError as e:
-            _LOGGER.warning(f"Error updating Ombi sensor: {e}")
+            _LOGGER.warning("Unable to update Ombi sensor: %s", e)
             self._state = None
             return
