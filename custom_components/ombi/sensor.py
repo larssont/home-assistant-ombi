@@ -54,8 +54,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
-    """Setup the Ombi sensor platform."""
-
+    """Set up the Ombi sensor platform."""
     name = config[CONF_NAME]
     conditions = config[CONF_MONITORED_CONDITIONS]
 
@@ -71,8 +70,8 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 
     try:
         ombi.test_connection()
-    except pyombi.OmbiError as e:
-        _LOGGER.warning("Unable to setup Ombi: %s", e)
+    except pyombi.OmbiError as err:
+        _LOGGER.warning("Unable to setup Ombi: %s", err)
         return
 
     sensors = []
@@ -114,6 +113,7 @@ class OmbiSensor(Entity):
         return self._state
 
     def update(self):
+        """Update the sensor."""
         try:
             if self._label == "pending":
                 self._state = self._ombi.pending_requests
@@ -125,7 +125,7 @@ class OmbiSensor(Entity):
                 self._state = self._ombi.approved_requests
             elif self._label == "available":
                 self._state = self._ombi.available_requests
-        except pyombi.OmbiError as e:
-            _LOGGER.warning("Unable to update Ombi sensor: %s", e)
+        except pyombi.OmbiError as err:
+            _LOGGER.warning("Unable to update Ombi sensor: %s", err)
             self._state = None
             return
