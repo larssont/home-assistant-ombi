@@ -22,7 +22,6 @@ _LOGGER = logging.getLogger(__name__)
 
 CONF_URLBASE = "urlbase"
 
-DEFAULT_HOST = "localhost"
 DEFAULT_NAME = "Ombi"
 DEFAULT_PORT = 5000
 DEFAULT_SCAN_INTERVAL = timedelta(seconds=60)
@@ -40,7 +39,7 @@ SENSOR_TYPES = {
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {
         vol.Required(CONF_API_KEY): cv.string,
-        vol.Required(CONF_HOST, default=DEFAULT_HOST): cv.string,
+        vol.Required(CONF_HOST): cv.string,
         vol.Optional(CONF_PORT, default=DEFAULT_PORT): cv.port,
         vol.Optional(CONF_URLBASE, default=DEFAULT_URLBASE): cv.string,
         vol.Optional(CONF_SSL, default=DEFAULT_SSL): cv.boolean,
