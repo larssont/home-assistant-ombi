@@ -11,7 +11,6 @@ from homeassistant.const import (
     CONF_API_KEY,
     CONF_HOST,
     CONF_MONITORED_CONDITIONS,
-    CONF_NAME,
     CONF_PORT,
     CONF_SCAN_INTERVAL,
     CONF_SSL,
@@ -52,7 +51,6 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the Ombi sensor platform."""
-    name = config[CONF_NAME]
     conditions = config[CONF_MONITORED_CONDITIONS]
 
     urlbase = f"{config[CONF_URLBASE].strip('/') if config[CONF_URLBASE] else ''}/"
@@ -77,7 +75,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
         sensor_label = condition
         sensor_type = SENSOR_TYPES[condition].get("type")
         sensor_icon = SENSOR_TYPES[condition].get("icon")
-        sensors.append(OmbiSensor(name, sensor_label, sensor_type, ombi, sensor_icon))
+        sensors.append(OmbiSensor(sensor_label, sensor_type, ombi, sensor_icon))
 
     add_entities(sensors, True)
 
@@ -85,10 +83,9 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 class OmbiSensor(Entity):
     """Representation of an Ombi sensor."""
 
-    def __init__(self, name, label, sensor_type, ombi, icon):
+    def __init__(self, label, sensor_type, ombi, icon):
         """Initialize the sensor."""
         self._state = None
-        self._name = name
         self._label = label
         self._type = sensor_type
         self._ombi = ombi
