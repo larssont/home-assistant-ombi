@@ -1,1 +1,1 @@
-"""Ombi component."""
+"""The Ombi component."""
