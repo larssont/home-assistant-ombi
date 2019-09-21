@@ -54,14 +54,19 @@ def setup(hass, config):
         _LOGGER.warning("Unable to setup Ombi: %s", err)
         return
 
-    hass.data[DOMAIN] = {"ombi": ombi}
+    hass.data[DOMAIN] = {"instance": ombi}
 
-    # def send_log(call):
-    #     """My first service."""
-    #     _LOGGER.warning("Received data", call.data)
+    def send_movie_request(call):
+        """My first service."""
 
-    # Register our service with Home Assistant.
+        # if call.data.get("name"):
+
+        test = call.data.get("name")
+        _LOGGER.warning(test)
+
+        _LOGGER.warning(call.data)
+
+    hass.services.register(DOMAIN, 'request_movie', send_movie_request)
     hass.helpers.discovery.load_platform("sensor", DOMAIN, {}, config)
 
-    # Return boolean to indicate that initialization was successfully.
     return True
