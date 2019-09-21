@@ -56,26 +56,47 @@ def setup(hass, config):
 
     hass.data[DOMAIN] = {"instance": ombi}
 
-    def send_request(call):
-        """My first service."""
-
-        def request_media(query, search, request, media_db):
-            media = search(query).json()
-            if media:
-                media_id = media[0][media_db]
-                request(media_id)
-
-        media_type = call.data.get("type")
+    def submit_movie_request(call):
+        """Submit request for movie."""
         name = call.data.get("name")
+        movie_id = ombi.search_movie(name).json()
+        if movie_id:
+            ombi.request_movie(movie_id)
 
-        if media_type == "tv":
-            request_media(name, ombi.search_tv, ombi.request_tv, "tvDbId")
-        elif media_type == "movie":
-            request_media(name, ombi.search_movie, ombi.request_movie, "theMovieDbId")
-        elif media_type == "music":
-            request_media(name, ombi.search_music_album, ombi.request_music, "foreignAlbumId")
+    def submit_tv_request(call):
+        """Submit request for TV show."""
 
-    hass.services.register(DOMAIN, "submit_request", send_request)
+        name = call.data.get("name")
+        tv_shows = ombi.search_tv(name).json()
+
+        if tv_shows:
+            first_season = call.data.get("first_season")
+            latest_season = call.data.get("latest_season")
+            all_seasons = call.data.get("all_seasons")
+
+            request_first = True if isinstance(first_season, bool) and first_season else False
+            request_latest = True if isinstance(latest_season, bool) and latest_season else False
+            request_all = True if isinstance(all_seasons, bool) and all_seasons else False
+
+            _LOGGER.warning(tv_shows[0])
+
+            ombi.request_tv(
+                tv_shows[0]['id'],
+                request_first=request_first,
+                request_latest=request_latest,
+                request_all=request_all,
+            )
+
+    def submit_music_request(call):
+        """Submit request for music."""
+        name = call.data.get("name")
+        music_id = ombi.search_music_album(name).json()
+        if music_id:
+            ombi.request_movie(music_id)
+
+    hass.services.register(DOMAIN, "submit_movie_request", submit_movie_request)
+    hass.services.register(DOMAIN, "submit_tv_request", submit_tv_request)
+    hass.services.register(DOMAIN, "submit_music_request", submit_music_request)
     hass.helpers.discovery.load_platform("sensor", DOMAIN, {}, config)
 
     return True
