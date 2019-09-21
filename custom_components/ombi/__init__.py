@@ -59,9 +59,9 @@ def setup(hass, config):
     def submit_movie_request(call):
         """Submit request for movie."""
         name = call.data.get("name")
-        movie_id = ombi.search_movie(name)
-        if movie_id:
-            ombi.request_movie(movie_id)
+        movies = ombi.search_movie(name)
+        if movies:
+            ombi.request_movie(movies[0]["theMovieDbId"])
 
     def submit_tv_request(call):
         """Submit request for TV show."""
@@ -81,7 +81,7 @@ def setup(hass, config):
             _LOGGER.warning(tv_shows[0])
 
             ombi.request_tv(
-                tv_shows[0]['id'],
+                tv_shows[0]["id"],
                 request_first=request_first,
                 request_latest=request_latest,
                 request_all=request_all,
@@ -92,7 +92,7 @@ def setup(hass, config):
         name = call.data.get("name")
         music = ombi.search_music_album(name)
         if music:
-            ombi.request_movie(music)
+            ombi.request_movie(music[0]["foreignAlbumId"])
 
     hass.services.register(DOMAIN, "submit_movie_request", submit_movie_request)
     hass.services.register(DOMAIN, "submit_tv_request", submit_tv_request)
