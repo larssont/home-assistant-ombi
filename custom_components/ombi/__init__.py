@@ -65,32 +65,24 @@ def setup(hass, config):
 
     def submit_tv_request(call):
         """Submit request for TV show."""
-
         name = call.data.get("name")
         tv_shows = ombi.search_tv(name)
 
         if tv_shows:
-            first_season = call.data.get("first_season")
-            latest_season = call.data.get("latest_season")
-            all_seasons = call.data.get("all_seasons")
-
-            request_first = True if isinstance(first_season, bool) and first_season else False
-            request_latest = True if isinstance(latest_season, bool) and latest_season else False
-            request_all = True if isinstance(all_seasons, bool) and all_seasons else False
-
-            _LOGGER.warning(tv_shows[0])
-
-            ombi.request_tv(
-                tv_shows[0]["id"],
-                request_first=request_first,
-                request_latest=request_latest,
-                request_all=request_all,
-            )
+            season = call.data.get("season")
+            show = tv_shows[0]["id"]
+            if season == "first":
+                ombi.request_tv(show, request_first=True)
+            elif season == "latest":
+                ombi.request_tv(show, request_latest=True)
+            elif season == "all":
+                ombi.request_tv(show, request_all=True)
 
     def submit_music_request(call):
         """Submit request for music."""
         name = call.data.get("name")
         music = ombi.search_music_album(name)
+
         if music:
             ombi.request_movie(music[0]["foreignAlbumId"])
 
