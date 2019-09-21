@@ -1,28 +1,22 @@
 """Support for Ombi."""
-from datetime import timedelta
 import logging
+from datetime import timedelta
 
 import pyombi
 import voluptuous as vol
 
 import homeassistant.helpers.config_validation as cv
 from homeassistant.components.sensor import PLATFORM_SCHEMA
-from homeassistant.const import (
-    CONF_API_KEY,
-    CONF_HOST,
-    CONF_MONITORED_CONDITIONS,
-    CONF_PORT,
-    CONF_SCAN_INTERVAL,
-    CONF_SSL,
-)
+from homeassistant.const import CONF_API_KEY, CONF_HOST, CONF_PORT, CONF_SSL
 from homeassistant.helpers.entity import Entity
 
 _LOGGER = logging.getLogger(__name__)
 
+SCAN_INTERVAL = timedelta(seconds=60)
+
 CONF_URLBASE = "urlbase"
 
 DEFAULT_PORT = 5000
-DEFAULT_SCAN_INTERVAL = timedelta(seconds=60)
 DEFAULT_SSL = False
 DEFAULT_URLBASE = ""
 
@@ -41,17 +35,12 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Optional(CONF_PORT, default=DEFAULT_PORT): cv.port,
         vol.Optional(CONF_URLBASE, default=DEFAULT_URLBASE): cv.string,
         vol.Optional(CONF_SSL, default=DEFAULT_SSL): cv.boolean,
-        vol.Optional(CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL): cv.time_period,
-        vol.Optional(CONF_MONITORED_CONDITIONS, default=list(SENSOR_TYPES)): vol.All(
-            cv.ensure_list, [vol.In(list(SENSOR_TYPES))]
-        ),
     }
 )
 
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the Ombi sensor platform."""
-    conditions = config[CONF_MONITORED_CONDITIONS]
 
     urlbase = f"{config[CONF_URLBASE].strip('/') if config[CONF_URLBASE] else ''}/"
 
@@ -71,10 +60,10 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 
     sensors = []
 
-    for condition in conditions:
-        sensor_label = condition
-        sensor_type = SENSOR_TYPES[condition].get("type")
-        sensor_icon = SENSOR_TYPES[condition].get("icon")
+    for sensor in SENSOR_TYPES:
+        sensor_label = sensor
+        sensor_type = SENSOR_TYPES[sensor]["type"]
+        sensor_icon = SENSOR_TYPES[sensor]["icon"]
         sensors.append(OmbiSensor(sensor_label, sensor_type, ombi, sensor_icon))
 
     add_entities(sensors, True)
