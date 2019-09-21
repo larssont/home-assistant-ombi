@@ -60,7 +60,7 @@ def setup(hass, config):
         """My first service."""
 
         def request_media(query, search, request, media_db):
-            media = search(query)
+            media = search(query).json()
             if media:
                 media_id = media[0][media_db]
                 request(media_id)
@@ -69,11 +69,11 @@ def setup(hass, config):
         name = call.data.get("name")
 
         if media_type == "tv":
-            request_media(name, ombi.search_tv, ombi.request_tv, "theTvDbId")
+            request_media(name, ombi.search_tv, ombi.request_tv, "tvDbId")
         elif media_type == "movie":
             request_media(name, ombi.search_movie, ombi.request_movie, "theMovieDbId")
         elif media_type == "music":
-            request_media(name, ombi.search_music_album, ombi.request_music, "albumId")
+            request_media(name, ombi.search_music_album, ombi.request_music, "foreignAlbumId")
 
     hass.services.register(DOMAIN, "submit_request", send_request)
     hass.helpers.discovery.load_platform("sensor", DOMAIN, {}, config)
