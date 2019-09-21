@@ -20,9 +20,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
         sensor_label = sensor
         sensor_type = SENSOR_TYPES[sensor]["type"]
         sensor_icon = SENSOR_TYPES[sensor]["icon"]
-        sensors.append(
-            OmbiSensor(sensor_label, sensor_type, ombi, sensor_icon)
-        )
+        sensors.append(OmbiSensor(sensor_label, sensor_type, ombi, sensor_icon))
 
     add_entities(sensors, True)
 

@@ -56,17 +56,26 @@ def setup(hass, config):
 
     hass.data[DOMAIN] = {"instance": ombi}
 
-    def send_movie_request(call):
+    def send_request(call):
         """My first service."""
 
-        # if call.data.get("name"):
+        def request_media(query, search, request, media_db):
+            media = search(query)
+            if media:
+                media_id = media[0][media_db]
+                request(media_id)
 
-        test = call.data.get("name")
-        _LOGGER.warning(test)
+        media_type = call.data.get("type")
+        name = call.data.get("name")
 
-        _LOGGER.warning(call.data)
+        if media_type == "tv":
+            request_media(name, ombi.search_tv, ombi.request_tv, "theTvDbId")
+        elif media_type == "movie":
+            request_media(name, ombi.search_movie, ombi.request_movie, "theMovieDbId")
+        elif media_type == "music":
+            request_media(name, ombi.search_music_album, ombi.request_music, "albumId")
 
-    hass.services.register(DOMAIN, 'request_movie', send_movie_request)
+    hass.services.register(DOMAIN, "submit_request", send_request)
     hass.helpers.discovery.load_platform("sensor", DOMAIN, {}, config)
 
     return True
