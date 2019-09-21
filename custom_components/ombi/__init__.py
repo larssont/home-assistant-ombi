@@ -1,11 +1,8 @@
-"""Example of a custom component exposing a service."""
+"""Support for Ombi."""
 import logging
 
-import voluptuous as vol
-
-from .const import CONF_URLBASE, DOMAIN, DEFAULT_PORT, DEFAULT_URLBASE, DEFAULT_SSL
-
 import homeassistant.helpers.config_validation as cv
+import voluptuous as vol
 from homeassistant.const import (
     CONF_API_KEY,
     CONF_HOST,
@@ -13,6 +10,8 @@ from homeassistant.const import (
     CONF_SSL,
     CONF_USERNAME,
 )
+
+from .const import CONF_URLBASE, DEFAULT_PORT, DEFAULT_SSL, DEFAULT_URLBASE, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -34,7 +33,7 @@ CONFIG_SCHEMA = vol.Schema(
 
 
 def setup(hass, config):
-    """Setup the service example component."""
+    """Setup the Ombi component platform."""
     import pyombi
 
     urlbase = f"{config[DOMAIN][CONF_URLBASE].strip('/') if config[DOMAIN][CONF_URLBASE] else ''}/"
@@ -79,12 +78,11 @@ def setup(hass, config):
                 ombi.request_tv(show, request_all=True)
 
     def submit_music_request(call):
-        """Submit request for music."""
+        """Submit request for music album."""
         name = call.data.get("name")
         music = ombi.search_music_album(name)
-
         if music:
-            ombi.request_movie(music[0]["foreignAlbumId"])
+            ombi.request_music(music[0]["foreignAlbumId"])
 
     hass.services.register(DOMAIN, "submit_movie_request", submit_movie_request)
     hass.services.register(DOMAIN, "submit_tv_request", submit_tv_request)

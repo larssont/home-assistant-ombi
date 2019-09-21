@@ -3,9 +3,9 @@ import logging
 
 from pyombi import OmbiError
 
-from .const import DOMAIN, SENSOR_TYPES
-
 from homeassistant.helpers.entity import Entity
+
+from .const import DOMAIN, SENSOR_TYPES
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -58,6 +58,8 @@ class OmbiSensor(Entity):
                 self._state = self._ombi.movie_requests
             elif self._label == "tv":
                 self._state = self._ombi.tv_requests
+            elif self._label == "music":
+                self._state = self._ombi.music_requests
             elif self._label == "pending":
                 self._state = self._ombi.total_requests["pending"]
             elif self._label == "approved":
