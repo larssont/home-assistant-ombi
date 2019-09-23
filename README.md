@@ -18,12 +18,14 @@ This project is a custom integration for Home Assistant which adds sensors displ
 
 ## Configuration variables
 
-
 **api_key** (required)  
 API key from ombi found under Settings/Ombi on your Ombi page.
 
-**host**  
+**host**  (required)
 The host Ombi is running on. 
+
+**username** (required)
+Your Ombi username.
 
 **port**  
 The port Ombi is running on.
@@ -34,8 +36,8 @@ Whether to or not to use ssl.
 **urlbase**   
 The base URL Ombi is running under.
 
-**monitored_conditions**  
-Conditions to monitor (defaults to all).
+
+The following sensors will be created.
 
 - movies
 - tv
@@ -43,18 +45,13 @@ Conditions to monitor (defaults to all).
 - approved
 - available
 
-**scan_interval**  
-Polling interval in seconds.
-
-
 ## Examples
 ```yaml
 sensor:
   - platform: ombi
     api_key: 46p2tsioswcdoifbstgu6kr6xuq4n4fa
     host: 192.168.1.120
-    port: 3579
-    ssl: false
+    username: username
 ```
 
 ```yaml
@@ -62,13 +59,18 @@ sensor:
   - platform: ombi
     api_key: 46p2tsioswcdoifbstgu6kr6xuq4n4fa
     host: myserver.com
+    username: username
     port: 443
     ssl: true
     urlbase: ombi/
-    monitored_conditions:
-      - movies
-      - tv
 ```
+
+## Services
+
+Custom services will be created for requesting media: `submit_movie_request`, `submit_music_request`,
+`submit_tv_request`
+
+Look at the examples in Home Assistant for more information.
 
 # Links
 
