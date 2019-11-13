@@ -1,82 +1,24 @@
 # Home Assistant Integration - Ombi
 
-This project is a custom integration for Home Assistant which adds sensors displaying information from an Ombi instance.
+This project is an integration for Home Assistant which adds sensors and services for an Ombi instance.
 
-# Installation
 
-## Manual
-1. Add a directory named *custom_components* to your Home Assistant root directory if you do not already have one.
-2. Create a directory named *ombi* inside the custom_components directory.
-3. Download the latest release from this repo and add the files to the directory you created.
-4. Done! See examples under *Usage*.
-
-## HACS
-1. Add this repo as a custom repository under *Community/Settings* with category type integration.
-2. Choose the latest version and press *Install*.
+<p align="center">
+  <b> :warning: Ombi was introduced as an integration in Home Assistant version 0.100. :warning: </b><br>
+  <b>See</b>
+  <a href="https://www.home-assistant.io/integrations/ombi/">Home Assistant docs</a><br>
+  <b>for more information.</b>
+  <b>This is just for maintenance.</b>
+</p>
 
 # Usage
 
-## Configuration variables
-
-**api_key** (required)  
-API key from ombi found under Settings/Ombi on your Ombi page.
-
-**host**  (required)
-The host Ombi is running on. 
-
-**username** (required)
-Your Ombi username.
-
-**port**  
-The port Ombi is running on.
-
-**ssl**   
-Whether to or not to use ssl.
-
-**urlbase**   
-The base URL Ombi is running under.
-
-
-The following sensors will be created.
-
-- movies
-- tv
-- pending
-- approved
-- available
-
-## Examples
-```yaml
-sensor:
-  - platform: ombi
-    api_key: 46p2tsioswcdoifbstgu6kr6xuq4n4fa
-    host: 192.168.1.120
-    username: username
-```
-
-```yaml
-sensor:
-  - platform: ombi
-    api_key: 46p2tsioswcdoifbstgu6kr6xuq4n4fa
-    host: myserver.com
-    username: username
-    port: 443
-    ssl: true
-    urlbase: ombi/
-```
-
-## Services
-
-Custom services will be created for requesting media: `submit_movie_request`, `submit_music_request`,
-`submit_tv_request`
-
-Look at the examples in Home Assistant for more information.
+See setup and configuration variables in the [Home Assistant docs](https://www.home-assistant.io/integrations/ombi/).
 
 # Links
 
 * Ombi: https://ombi.io/
 * Home Assistant: https://www.home-assistant.io/
-* HACS: https://github.com/custom-components/hacs
 
 # License
 
